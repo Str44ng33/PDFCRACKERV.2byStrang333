@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define o diretório do projeto
-PROJECT_DIR="/home/strang333/PDFCRACKERbystrang333"
+PROJECT_DIR="/home/strang333/PDFCRACKERV.2byStrang333"
 SCRIPT_NAME="arquivo.py"
 
 # Cria o ambiente virtual se não existir
@@ -21,8 +21,12 @@ pip install --upgrade pip
 pip install pillow pikepdf tqdm termcolor
 
 # Executa o script Python
-echo "Executando o script Python..."
-python3 "$PROJECT_DIR/$SCRIPT_NAME"
+if [ -f "$PROJECT_DIR/$SCRIPT_NAME" ]; then
+    echo "Executando o script Python..."
+    python3 "$PROJECT_DIR/$SCRIPT_NAME"
+else
+    echo "Script Python não encontrado: $SCRIPT_NAME"
+fi
 
 # Instruções adicionais para o usuário
 echo "Dependências instaladas e script executado com sucesso!"
