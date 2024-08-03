@@ -1,0 +1,137 @@
+import os
+import tkinter as tk
+from tkinter import filedialog, messagebox, scrolledtext
+from tkinter.ttk import Progressbar, Style
+import pikepdf
+from PIL import Image, ImageTk  # Certifique-se de ter a biblioteca pillow instalada
+
+def create_interface():
+    def browse_pdf():
+        pdf_file_path.set(filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")], initialdir=os.path.expanduser("~")))
+
+    def browse_wordlist():
+        wordlist_file_path.set(filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")], initialdir=os.path.expanduser("~")))
+
+    def start_cracking():
+        pdf_path = pdf_file_path.get()
+        wordlist_path = wordlist_file_path.get()
+        
+        if not pdf_path or not wordlist_path:
+            status_text.insert(tk.END, "Erro: Por favor, selecione o arquivo PDF e a lista de senhas.\n")
+            return
+
+        if not os.path.exists(pdf_path):
+            status_text.insert(tk.END, f"Erro: Arquivo PDF {pdf_path} não encontrado.\n")
+            return
+
+        if not os.path.exists(wordlist_path):
+            status_text.insert(tk.END, f"Erro: Arquivo de senhas {wordlist_path} não encontrado.\n")
+            return
+
+        with open(wordlist_path, "r") as wordlist_file:
+            passwords = wordlist_file.read().splitlines()
+        
+        progress_bar['maximum'] = len(passwords)
+        status_text.delete(1.0, tk.END)
+
+        pdf_name = os.path.basename(pdf_path).replace('.pdf', '')  # Nome do arquivo PDF sem extensão
+        log_file_path = f'/home/strang333/PDFCRACKERbystrang333/log_{pdf_name}.txt'
+
+        for i, password in enumerate(passwords):
+            try:
+                with pikepdf.open(pdf_path, password=password):
+                    status_text.insert(tk.END, f"Senha encontrada: {password}\n", 'success')
+                    with open(log_file_path, 'w') as log_file:
+                        log_file.write(f"Senha encontrada: {password}\n")
+                    return
+            except pikepdf.PasswordError:
+                progress_bar['value'] = i + 1
+                root.update_idletasks()
+                status_text.insert(tk.END, f"Tentando senha: {password}\n")
+                status_text.see(tk.END)
+            except Exception as e:
+                status_text.insert(tk.END, f"Erro: {str(e)}\n")
+                return
+
+        status_text.insert(tk.END, "Falha: Não foi possível encontrar a senha.\n")
+
+    root = tk.Tk()
+    root.title("PDF Cracker")
+    root.geometry("800x600")  # Tamanho inicial maior para melhor visibilidade
+    root.config(bg='#0d0d0d')  # Fundo preto escuro
+
+    # Adicionando o ícone
+    icon_image = tk.PhotoImage(file='/home/strang333/PDFCRACKERbystrang333/pngtree-red-skull-head-png-image_6563601.png')  # Caminho da logo
+    root.iconphoto(True, icon_image)
+
+    # Configuração de estilo
+    style = Style()
+    style.configure('TButton',
+                    background='#ff0000',  # Vermelho cibernético
+                    foreground='white',
+                    font=('Roboto', 10),
+                    borderwidth=2,
+                    focusthickness=2,
+                    focuscolor='none',
+                    padding=6)
+    style.map('TButton',
+              background=[('active', '#e60000')])  # Vermelho mais escuro para hover
+    style.configure('TEntry',
+                    background='#1e1e1e',  # Preto escuro para entradas
+                    foreground='white',
+                    font=('Roboto', 10),
+                    padding=6)
+    style.configure('TLabel',
+                    background='#0d0d0d',  # Fundo preto para labels
+                    foreground='white',
+                    font=('Roboto', 12))
+
+    pdf_file_path = tk.StringVar()
+    wordlist_file_path = tk.StringVar()
+
+    # Redimensionar a imagem
+    image_path = '/home/strang333/PDFCRACKERbystrang333/Untitled.png'  # Caminho da imagem
+    image = Image.open(image_path)
+    image = image.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem para 200x200 pixels
+    photo = ImageTk.PhotoImage(image)
+    
+    image_label = tk.Label(root, image=photo, bg='#0d0d0d')
+    image_label.photo = photo  # Manter referência da imagem
+    image_label.grid(row=0, column=0, columnspan=3, pady=20, padx=10)
+
+    tk.Label(root, text="Arquivo PDF:", bg='#0d0d0d', fg='white').grid(row=1, column=0, padx=15, pady=10, sticky='w')
+    pdf_entry = tk.Entry(root, textvariable=pdf_file_path, width=70)
+    pdf_entry.grid(row=1, column=1, padx=15, pady=10, sticky='ew')
+    tk.Button(root, text="Procurar", command=browse_pdf).grid(row=1, column=2, padx=15, pady=10)
+
+    tk.Label(root, text="Lista de Senhas:", bg='#0d0d0d', fg='white').grid(row=2, column=0, padx=15, pady=10, sticky='w')
+    wordlist_entry = tk.Entry(root, textvariable=wordlist_file_path, width=70)
+    wordlist_entry.grid(row=2, column=1, padx=15, pady=10, sticky='ew')
+    tk.Button(root, text="Procurar", command=browse_wordlist).grid(row=2, column=2, padx=15, pady=10)
+
+    tk.Button(root, text="Iniciar", command=start_cracking).grid(row=3, column=0, columnspan=3, pady=20)
+
+    progress_bar = Progressbar(root, orient='horizontal', length=750, mode='determinate', style='red.Horizontal.TProgressbar')
+    progress_bar.grid(row=4, column=0, columnspan=3, pady=10)
+
+    status_text = scrolledtext.ScrolledText(root, width=80, height=15, bg='#1e1e1e', fg='white', font=('Roboto', 10), borderwidth=2, relief='flat')
+    status_text.grid(row=5, column=0, columnspan=3, pady=10)
+
+    # Customização da ProgressBar
+    style.configure('red.Horizontal.TProgressbar',
+                    troughcolor='#555555',
+                    background='#ff0000',
+                    thickness=20)
+
+    # Adiciona tags para cores no texto
+    status_text.tag_configure('success', foreground='green')  # Verde para sucesso
+
+    tk.Label(root, text="Feito por: https://github.com/Str44ng33 | Matheus 802 CMM", bg='#0d0d0d', fg='white', font=('Roboto', 16)).grid(row=6, column=0, columnspan=3, pady=15)
+
+    root.grid_rowconfigure(5, weight=1)
+    root.grid_columnconfigure(1, weight=1)
+
+    root.mainloop()
+
+create_interface()
+
