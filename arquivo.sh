@@ -2,6 +2,7 @@
 
 # Define o diretório do projeto
 PROJECT_DIR="/home/strang333/PDFCRACKERbystrang333"
+SCRIPT_NAME="arquivo.py"
 
 # Cria o ambiente virtual se não existir
 if [ ! -d "$PROJECT_DIR/venv" ]; then
@@ -19,10 +20,14 @@ echo "Instalando dependências..."
 pip install --upgrade pip
 pip install pillow pikepdf tqdm termcolor
 
+# Executa o script Python
+echo "Executando o script Python..."
+python3 "$PROJECT_DIR/$SCRIPT_NAME"
+
 # Instruções adicionais para o usuário
-echo "Dependências instaladas com sucesso!"
-echo "Para rodar o script, ative o ambiente virtual e execute o arquivo Python."
+echo "Dependências instaladas e script executado com sucesso!"
+echo "Para rodar o script no futuro, ative o ambiente virtual e execute o arquivo Python."
 echo "Ativar o ambiente virtual:"
 echo "source $PROJECT_DIR/venv/bin/activate"
 echo "Executar o script:"
-echo "python3 arquivo.py"
+echo "python3 $SCRIPT_NAME"
