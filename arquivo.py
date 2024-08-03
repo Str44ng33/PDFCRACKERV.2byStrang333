@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
 from tkinter.ttk import Progressbar, Style
 import pikepdf
-from PIL import Image, ImageTk  # Certifique-se de ter a biblioteca pillow instalada
+from PIL import Image, ImageTk  
 
 def create_interface():
     def browse_pdf():
@@ -34,7 +34,7 @@ def create_interface():
         progress_bar['maximum'] = len(passwords)
         status_text.delete(1.0, tk.END)
 
-        pdf_name = os.path.basename(pdf_path).replace('.pdf', '')  # Nome do arquivo PDF sem extensão
+        pdf_name = os.path.basename(pdf_path).replace('.pdf', '') 
         log_file_path = os.path.join(script_dir, 'Logs', f'log_{pdf_name}.txt')
 
         for i, password in enumerate(passwords):
@@ -57,20 +57,19 @@ def create_interface():
 
     root = tk.Tk()
     root.title("PDF Cracker")
-    root.geometry("800x600")  # Tamanho inicial maior para melhor visibilidade
-    root.config(bg='#0d0d0d')  # Fundo preto escuro
+    root.geometry("800x600")  
+    root.config(bg='#0d0d0d')  
 
-    # Diretório do script
+   
     script_dir = os.path.dirname(__file__)
 
-    # Adicionando o ícone
-    icon_image = tk.PhotoImage(file=os.path.join(script_dir, 'pngtree-red-skull-head-png-image_6563601.png'))  # Caminho da logo
+    icon_image = tk.PhotoImage(file=os.path.join(script_dir, 'pngtree-red-skull-head-png-image_6563601.png'))  
     root.iconphoto(True, icon_image)
 
-    # Configuração de estilo
+    
     style = Style()
     style.configure('TButton',
-                    background='#ff0000',  # Vermelho cibernético
+                    background='#ff0000',  
                     foreground='white',
                     font=('Roboto', 10),
                     borderwidth=2,
@@ -78,28 +77,27 @@ def create_interface():
                     focuscolor='none',
                     padding=6)
     style.map('TButton',
-              background=[('active', '#e60000')])  # Vermelho mais escuro para hover
+              background=[('active', '#e60000')])  
     style.configure('TEntry',
-                    background='#1e1e1e',  # Preto escuro para entradas
+                    background='#1e1e1e',  
                     foreground='white',
                     font=('Roboto', 10),
                     padding=6)
     style.configure('TLabel',
-                    background='#0d0d0d',  # Fundo preto para labels
+                    background='#0d0d0d',  
                     foreground='white',
                     font=('Roboto', 12))
 
     pdf_file_path = tk.StringVar()
     wordlist_file_path = tk.StringVar()
 
-    # Redimensionar a imagem
-    image_path = os.path.join(script_dir, 'Untitled.png')  # Caminho da imagem
+    image_path = os.path.join(script_dir, 'Untitled.png')
     image = Image.open(image_path)
-    image = image.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem para 200x200 pixels
+    image = image.resize((200, 200), Image.LANCZOS)  
     photo = ImageTk.PhotoImage(image)
     
     image_label = tk.Label(root, image=photo, bg='#0d0d0d')
-    image_label.photo = photo  # Manter referência da imagem
+    image_label.photo = photo  
     image_label.grid(row=0, column=0, columnspan=3, pady=20, padx=10)
 
     tk.Label(root, text="Arquivo PDF:", bg='#0d0d0d', fg='white').grid(row=1, column=0, padx=15, pady=10, sticky='w')
@@ -120,14 +118,14 @@ def create_interface():
     status_text = scrolledtext.ScrolledText(root, width=80, height=15, bg='#1e1e1e', fg='white', font=('Roboto', 10), borderwidth=2, relief='flat')
     status_text.grid(row=5, column=0, columnspan=3, pady=10)
 
-    # Customização da ProgressBar
+    
     style.configure('red.Horizontal.TProgressbar',
                     troughcolor='#555555',
                     background='#ff0000',
                     thickness=20)
 
-    # Adiciona tags para cores no texto
-    status_text.tag_configure('success', foreground='green')  # Verde para sucesso
+    
+    status_text.tag_configure('success', foreground='green')  
 
     tk.Label(root, text="Feito por: https://github.com/Str44ng33 | Matheus 802 CMM", bg='#0d0d0d', fg='white', font=('Roboto', 16)).grid(row=6, column=0, columnspan=3, pady=15)
 
