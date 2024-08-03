@@ -7,10 +7,10 @@ from PIL import Image, ImageTk  # Certifique-se de ter a biblioteca pillow insta
 
 def create_interface():
     def browse_pdf():
-        pdf_file_path.set(filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")], initialdir=os.path.expanduser("~")))
+        pdf_file_path.set(filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")], initialdir=os.path.join(script_dir, 'PDFs')))
 
     def browse_wordlist():
-        wordlist_file_path.set(filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")], initialdir=os.path.expanduser("~")))
+        wordlist_file_path.set(filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")], initialdir=os.path.join(script_dir, 'Wordlists')))
 
     def start_cracking():
         pdf_path = pdf_file_path.get()
@@ -35,7 +35,7 @@ def create_interface():
         status_text.delete(1.0, tk.END)
 
         pdf_name = os.path.basename(pdf_path).replace('.pdf', '')  # Nome do arquivo PDF sem extensão
-        log_file_path = f'/PDFCRACKERbystrang333/log_{pdf_name}.txt'
+        log_file_path = os.path.join(script_dir, 'Logs', f'log_{pdf_name}.txt')
 
         for i, password in enumerate(passwords):
             try:
@@ -60,8 +60,11 @@ def create_interface():
     root.geometry("800x600")  # Tamanho inicial maior para melhor visibilidade
     root.config(bg='#0d0d0d')  # Fundo preto escuro
 
+    # Diretório do script
+    script_dir = os.path.dirname(__file__)
+
     # Adicionando o ícone
-    icon_image = tk.PhotoImage(file='/PDFCRACKERbystrang333/pngtree-red-skull-head-png-image_6563601.png')  # Caminho da logo
+    icon_image = tk.PhotoImage(file=os.path.join(script_dir, 'pngtree-red-skull-head-png-image_6563601.png'))  # Caminho da logo
     root.iconphoto(True, icon_image)
 
     # Configuração de estilo
@@ -90,7 +93,7 @@ def create_interface():
     wordlist_file_path = tk.StringVar()
 
     # Redimensionar a imagem
-    image_path = '/PDFCRACKERbystrang333/Untitled.png'  # Caminho da imagem
+    image_path = os.path.join(script_dir, 'Untitled.png')  # Caminho da imagem
     image = Image.open(image_path)
     image = image.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem para 200x200 pixels
     photo = ImageTk.PhotoImage(image)
@@ -134,4 +137,3 @@ def create_interface():
     root.mainloop()
 
 create_interface()
-
