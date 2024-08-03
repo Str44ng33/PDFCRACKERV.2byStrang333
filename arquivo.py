@@ -35,7 +35,7 @@ def create_interface():
         status_text.delete(1.0, tk.END)
 
         pdf_name = os.path.basename(pdf_path).replace('.pdf', '')  # Nome do arquivo PDF sem extensão
-        log_file_path = f'/home/strang333/PDFCRACKERbystrang333/log_{pdf_name}.txt'
+        log_file_path = f'/PDFCRACKERbystrang333/log_{pdf_name}.txt'
 
         for i, password in enumerate(passwords):
             try:
@@ -61,7 +61,7 @@ def create_interface():
     root.config(bg='#0d0d0d')  # Fundo preto escuro
 
     # Adicionando o ícone
-    icon_image = tk.PhotoImage(file='/home/strang333/PDFCRACKERbystrang333/pngtree-red-skull-head-png-image_6563601.png')  # Caminho da logo
+    icon_image = tk.PhotoImage(file='/PDFCRACKERbystrang333/pngtree-red-skull-head-png-image_6563601.png')  # Caminho da logo
     root.iconphoto(True, icon_image)
 
     # Configuração de estilo
@@ -90,7 +90,7 @@ def create_interface():
     wordlist_file_path = tk.StringVar()
 
     # Redimensionar a imagem
-    image_path = '/home/strang333/PDFCRACKERbystrang333/Untitled.png'  # Caminho da imagem
+    image_path = '/PDFCRACKERbystrang333/Untitled.png'  # Caminho da imagem
     image = Image.open(image_path)
     image = image.resize((200, 200), Image.LANCZOS)  # Redimensiona a imagem para 200x200 pixels
     photo = ImageTk.PhotoImage(image)
